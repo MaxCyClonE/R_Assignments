@@ -1,0 +1,214 @@
+---
+title: "Assignmen 2"
+author: "Wenhao Li 250959325"
+date: "09/02/2020"
+output: word_document
+---
+
+#Question 1
+#(a)
+```{r}
+v1<-c(7,21)
+d1<-data.frame(x=1:2,y=c("a","b"))
+```
+
+#(b)
+```{r}
+write(v1,file = "data1")
+
+
+write.table(v1,file = "data3")
+write.table(d1,file = "data4")
+```
+
+
+#(c)
+```{r}
+v2<-scan(file = "data1")
+v3<-read.table(file = "data3")
+d2<-read.table(file = "data4")
+```
+
+#(d)
+```{r}
+v1
+v2
+v3
+all.equal(v1,v2)
+all.equal(v1,v3)
+
+d1
+d2
+all.equal(d1,d2,check.attributes=FALSE)
+```
+When use scan and write function, they keep the result same for vector object. However, write function can't export data frame object.
+When use write.table and read.table, they keep the result same for data.frame object. However, they make the vector object changed. Vector object changed into  data.frame object.
+
+
+
+#Question 2
+```{r}
+data1<-2^(1:15)
+data2<-(1:15)^3
+index<-(1:15)[data1>data2]
+elements<-data1[index]
+index
+elements
+```
+
+
+
+
+#Question 3
+```{r}
+#Similarity: Both dump and save can save objects
+#Difference: 
+#  "Dump" function takes a vector of names of R objects and produces text representations of the objects on a file or connection. (1)
+#  "Save" function writes an external representation of R objects to the speified file.
+
+#creat two objects
+o1<-(1:5)
+o2<-(6:10)
+#dump and source
+dump(list=c("o1","o2"),file = "o3")
+#rename
+new_o1<-o1
+new_o2<-o2
+
+source(file = "o3")
+#compare 
+all.equal(o1,new_o1)
+all.equal(o2,new_o2)
+
+
+#save and load
+o4<-(1:5)
+o5<-(6:10)
+save(list = c("o4","o5"),file = "o6")
+new_o4<-o4
+new_o5<-o5
+load(file="o6")
+all.equal(o4,new_o4)
+all.equal(o5,new_o5)
+```
+Dump and source get the same R objects back.
+Save and load get the same R objects back.
+
+
+
+
+#Question 4
+```{r}
+library(MASS)
+data(Pima.te)
+BMI.category<-c("Very severly underweight","Severely underweight","Underweight","Normal (healthy weight)","Overweight","Obese Class I (Moderately)","Obese Class II (Severely obese)","Obese Class III (Very severely obese)","Obese Class IV (Morbidly obese)","Obese Class V (Super obese)","Obese Class VI (Hyper obese)")
+BMI.points<-c(0,15,16,18.5,25,30,35,40,45,50,60,Inf)
+BMI_data<-cut(Pima.te$bmi,breaks = BMI.points,labels = BMI.category,ordered_result = TRUE )
+table(BMI_data)
+barplot(table(BMI_data),main = "BMI category and corresponding Frequency",xlab = "BMI category",ylab = "Frequency")
+
+#Cut again
+BMI.category.new<-c("Underweight","Normal","Overweight")
+BMI.points.new<-c(0,18.5,25,Inf)
+BMI_data.new<-cut(Pima.te$bmi,breaks = BMI.points.new,labels = BMI.category.new,ordered_result = TRUE)
+table(BMI_data.new)
+barplot(table(BMI_data.new),main = "BMI category and corresponding Frequency",xlab = "BMI category",ylab = "Frequency")
+```
+
+
+
+
+#Question 5
+#(a)
+```{r}
+data(pressure)
+plot(x=pressure$temperature,y=pressure$pressure,main="Scatterplot of Pressure VS Temperature ",xlab="Temperature",ylab="Pressure")
+```
+The variables(temperature and pressure) related nonlinear.
+
+#(b)
+```{r}
+residuals<-with(pressure,pressure-(0.168+0.007*temperature)^(20/3))
+qqnorm(residuals)
+qqline(residuals)
+```
+The residuals are not normally distributed. They follow a skewed distribution.
+
+#(c)
+```{r}
+pressure.new<-pressure$pressure^(3/20)
+plot(x=pressure$temperature,y=pressure.new,main="Scatterplot of Pressure.new VS Temperature ",xlab="Temperature",ylab="Pressure.new")
+```
+The relationship between transformed pressure values and temperature values is a linear relationship.
+
+#(d)
+```{r}
+residuals.new<-with(pressure,pressure.new-(0.168+0.007*temperature))
+qqnorm(residuals.new)
+qqline(residuals.new)
+```
+The residuals are not normally distributed. They follow a skewed distribution.
+
+
+
+#Question6
+#(a)
+```{r}
+plot(x=pressure$temperature,y=pressure$pressure,main="Scatterplot of Pressure VS Temperature ",xlab="Temperature",ylab="Pressure")
+curve((0.168+0.007*x)^(20/3),from = 0,to=400,add=TRUE)
+```
+
+#(b)
+```{r}
+pressure$pressure.new<-pressure$pressure^(3/20)
+plot(x=pressure$temperature,y=pressure$pressure.new,main="Scatterplot of Pressure.new VS Temperature ",xlab="Temperature",ylab="Pressure.new")
+abline(0.168,0.007)
+```
+
+#(c)
+```{r}
+pressure$pressure.new<-pressure$pressure^(3/20)
+plot(x=pressure$temperature,y=pressure$pressure.new,main="Scatterplot of Pressure.new VS Temperature ",xlab="Temperature",ylab="Pressure.new")
+abline(0.168,0.007)
+legend("topleft",legend = c("Data Point","Straight line"),lty = c(NA,3),pch = c(NA,2))
+```
+
+#(d)
+```{r}
+#2x1 layout
+par(mfrow=c(2,1))
+#1st plot
+plot(x=pressure$temperature,y=pressure$pressure,main="Scatterplot of Pressure VS Temperature ",xlab="Temperature",ylab="Pressure")
+curve((0.168+0.007*x)^(20/3),from = 0,to=400,add=TRUE)
+#2nd plot
+pressure$pressure.new<-pressure$pressure^(3/20)
+plot(x=pressure$temperature,y=pressure$pressure.new,main="Scatterplot of Pressure.new VS Temperature ",xlab="Temperature",ylab="Pressure.new")
+abline(0.168,0.007)
+legend("topleft",legend = c("Data Point","Straight line"),lty = c(NA,3),pch = c(NA,2))
+
+
+#1x2 layout
+par(mfrow=c(1,2))
+#1st plot
+plot(x=pressure$temperature,y=pressure$pressure,main="Scatterplot of Pressure VS Temperature ",xlab="Temperature",ylab="Pressure")
+curve((0.168+0.007*x)^(20/3),from = 0,to=400,add=TRUE)
+#2nd plot
+pressure$pressure.new<-pressure$pressure^(3/20)
+plot(x=pressure$temperature,y=pressure$pressure.new,main="Scatterplot of Pressure.new VS Temperature ",xlab="Temperature",ylab="Pressure.new")
+abline(0.168,0.007)
+legend("topleft",legend = c("Data Point","Straight line"),lty = c(NA,3),pch = c(NA,2))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
