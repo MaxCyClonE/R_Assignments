@@ -1,0 +1,208 @@
+---
+title: "Assignment 3"
+author: "Wenhao Li 250959325"
+date: "01/03/2020"
+output: word_document
+---
+
+#Question 1
+```{r}
+#x,y,z
+x<-seq(-pi,pi,length=50)
+y<-seq(-pi,pi,length=50)
+fun_xy<-function(x,y){
+  (2+sin(x))*(cos(2*y))
+}
+z<-outer(x,y,fun_xy)
+
+#Plot plots by three different values
+persp(x,y,z,xlab="X",ylab="Y",zlab="(2+sin(x))*(cos(2*y))",main="theta=30,phi=30",theta=30,phi=30)
+persp(x,y,z,xlab="X",ylab="Y",zlab="(2+sin(x))*(cos(2*y))",main="theta=60,phi=60",theta=60,phi=60)
+persp(x,y,z,xlab="X",ylab="Y",zlab="(2+sin(x))*(cos(2*y))",main="theta=90,phi=90",theta=90,phi=90)
+```
+
+
+
+#Question 2
+```{r}
+a_fun<-function(n){
+  #Error checking 
+  if(!is.numeric(n)){
+    stop("n should be numeric")
+  }
+  if(is.na(n)){
+    stop("n should not indlude missing values")
+  }
+  #Function Body
+  minimum<-sum(pmin(2^(1:n),(1:n)^3))
+  maximum<-sum(pmax(2^(1:n),(1:n)^3))
+  return(c(minimum,maximum))
+}
+```
+
+```{r,error=TRUE}
+#Test for a few bad/wrong n's
+#Test for numeric
+a_fun("my")
+#Test for missing valus
+a_fun(c(NA,30))
+```
+
+```{r}
+#Execute function
+sapply(seq(200,5000,by=600),a_fun)
+```
+
+
+
+#Question 3
+```{r}
+IQR.outliers<-function(x){
+  #(a) Error Checking
+  if(is.na(x)){
+    stop("x should not include missing values")
+  }
+  if(!is.numeric(x)){
+    stop("x should be numeric")
+  }
+  
+  #(b) Compute IQR as Q3-Q1
+  Q1<-quantile(x,probs = 0.25)
+  Q3<-quantile(x,probs = 0.75)
+  IQR<-Q3-Q1
+  
+  #(c) Detect suspected outlier(s)
+  lowerboundary<-Q1-1.5*IQR
+  upperboundary<-Q3+1.5*IQR
+  outliers_lowerboundary<-x[x<lowerboundary]
+  outliers_upperboundary<-x[x>upperboundary]
+  
+  #(d) Boxplot
+  boxplot(x)
+  
+  #(e)Proper output
+  return(list(IQR=IQR,outliers_lowerboundary=outliers_lowerboundary,outliers_upperboundary=outliers_upperboundary))
+}
+```
+
+
+```{r,error=TRUE}
+# Test with dist and speed in the data.frame cars
+IQR.outliers(cars$dist)
+IQR.outliers(cars$speed)
+
+# Test with wrong inputs
+IQR.outliers(c(NA,30))
+```
+
+
+
+#Question 4
+
+# (a)
+```{r}
+# Import dataset
+dataset1<-read.table("~/Desktop/SS2864/Assignment 3/GLB.Ts_dSST.csv",header = TRUE,sep=",")
+# Keep only 13 columns
+dataset2<-dataset1[,1:13]
+```
+
+# (b)
+```{r}
+my.newfunction<-function(x){
+  # Error checking
+  if(is.na(x)){
+    stop("x should not include missing values")
+  }
+  # Function Body
+  new_x<-x[-1]
+  return(mean(new_x))
+}
+average_temperatures<-apply(dataset2,1,my.newfunction)
+plot(dataset2$Year,average_temperatures,xlab="Year",ylab="Yearly Average Temperatures",main="Yearly Average Temperatures from 1880 to 2019",type="l")
+```
+Comment:
+The overall trend of yearly average temperature from 1880 to 2019 is upward.
+The yearly average temperature between 1880 and 1940 is under 0 and is stable.
+The yearly average temperature increase rapidly between 1960 and 2019.
+
+
+# (c)
+```{r}
+Years<-c(seq(1880,2000,20),2019)
+n<-length(Years)
+dataset3<-dataset2[Years-1880+1,2:13]
+dataset4<-t(as.matrix(dataset3))
+matplot(dataset4,xlab="Month",ylab="Temperature Change",type="l",col=1:n,lty=1:n)
+legend("topleft",legend=Years,col=1:n,lty=1:n)
+title("Monthly temperatures from Jan to Dec for some years")
+```
+Comment:
+Each year's monthly temperatures is stable.
+Monthly temperature of 2019 is much higher than other years' monthly temperature.
+
+
+
+#Question 5
+```{r}
+my.ecdf<-function(x,y){
+  # Error checking
+  if(!is.numeric(y)){
+    stop("y should be a number")
+  }
+  if(length(y)!=1){
+    stop("y should be a vector")
+  }
+  # Function Body
+  n<-length(x)
+  a_sum<-sum(as.integer(x<=y))
+  b<-a_sum/n
+  return(b)
+}
+
+# Test
+my.ecdf(x=rnorm(20),y=-2)
+my.ecdf(x=rnorm(20),y=2)
+my.ecdf(x=rnorm(20),y=median(x))
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
