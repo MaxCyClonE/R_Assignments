@@ -8,8 +8,12 @@ There are five assignments in total, and the content and difficulty of each assi
 'huron.R' is the data set for Assignment 5.
 
 Assignment 1 is the most basic one.
-In Assignment 1:
+
+
+**In Assignment 1**:
+
 ’search’, ‘objects’, ’help’, ‘curve’ 
+
 ‘for loop’
 
 Math functions: mean, sum, rnorm
@@ -18,7 +22,9 @@ Matrix
 
 Built-in data frame ‘cars’, ’USArrests’
 
-In Assignment 2: 
+
+**In Assignment 2**: 
+
 Scan, read.table
 
 Write, write.table
@@ -37,7 +43,9 @@ Construct histogram, scatterplot, graph, QQ plot
 
 Par, mfrow
 
-In Assignment 3:
+
+**In Assignment 3**:
+
 Construct function 
 
 Persp function
@@ -48,7 +56,9 @@ Sta’s IQR, outliers
 
 Analyze a given data set
 
-In Assignment 4:
+
+**In Assignment 4**:
+
 Evaluate polynomials via vectors, for and so on
 
 Set.seed()
@@ -63,7 +73,8 @@ Inverse and reject method
 
 Construct confidence interval and compute accuracy
 
-In Assignment 5:
+**In Assignment 5**:
+
 Monte Carlo integration 
 
 rnorm
