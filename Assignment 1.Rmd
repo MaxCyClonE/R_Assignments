@@ -1,0 +1,303 @@
+---
+title: "Assignment 1"
+author: "Wenhao Li 250959325"
+date: "26/01/2020"
+output:
+  pdf_document: default
+  word_document: default
+---
+
+# Question 1
+```{r}
+#Find all possible R built-in functions related to exp distribution 
+search()
+objects(3)
+```
+The R bulit-in functions related to exp distribution are dexp, pexp, qexp and rexp.
+Rexp generates random deviates.
+Dexp gives the density.
+
+```{r}
+curve(dexp,from=0,to=4)
+```
+
+The code curve(dexp,from=0,to=4) plots Exp(1)'s distibution, where x is from 0 to 4 (domain of x is[0,4]).
+
+
+
+
+
+
+
+
+# Question 2
+```{r}
+# Use for loop for sum
+sum1<-0
+for (i in 1:100) {
+  sum1<-sum1+i
+}
+sum1
+# Use for R function for sum
+sum(1:100)
+sum1==sum(1:100)
+
+
+# Use for loop for mean
+sum1_mean<-0
+for (i in 1:100) {
+  sum1_mean<-sum1_mean*(i-1)/i+1
+}
+sum1_mean
+# Use for R function for mean
+mean(1:100)
+sum1_mean==mean(1:100)
+```
+When we use R function and for loop to get the sum and mean, we can get the same result. However, using R function directly is better. Because it has less steps and it is more convenience to be read.
+
+
+
+
+
+
+
+
+# Question 3
+```{r}
+# n=10;Use for loop and compare with geometric series formula
+n_10<-0
+for (j in 0:10) {
+  n_10<- n_10+1.08^j
+}
+n_10
+n_10_formula<-(1-1.08^11)/(1-1.08)
+n_10_formula
+n_10==n_10_formula
+
+#n=20;Use for loop and compare with geometric series formula
+n_20<-0
+for (j in 0:20) {
+  n_20<- n_20+1.08^j
+}
+n_20
+n_20_formula<-(1-1.08^21)/(1-1.08)
+n_20_formula
+n_20==n_20_formula
+
+#n=30;Use for loop and compare with geometric series formula
+n_30<-0
+for (j in 0:30) {
+  n_30<- n_30+1.08^j
+}
+n_30
+n_30_formula<-(1-1.08^31)/(1-1.08)
+n_30_formula
+n_30==n_30_formula
+
+#n=40;Use for loop and compare with geometric series formula
+n_40<-0
+for (j in 0:40) {
+  n_40<- n_40+1.08^j
+}
+n_40
+n_40_formula<-(1-1.08^41)/(1-1.08)
+n_40_formula
+n_40==n_40_formula
+
+
+#n=10;Use sum function and compare with geometric series formula
+sum_n10<-0
+sum_n10<-sum(1.08^(0:10))
+sum_n10
+n_10_formula
+sum_n10==n_10_formula
+
+#n=20;Use sum function and compare with geometric series formula
+sum_n20<-0
+sum_n20<-sum(1.08^(0:20))
+sum_n20
+n_20_formula
+sum_n20==n_20_formula
+
+#n=30;Use sum function and compare with geometric series formula
+sum_n30<-0
+sum_n30<-sum(1.08^(0:30))
+sum_n30
+n_30_formula
+sum_n30==n_30_formula
+
+#n=40;Use sum function and compare with geometric series formula
+sum_n40<-0
+sum_n40<-sum(1.08^(0:40))
+sum_n40
+n_40_formula
+sum_n40==n_40_formula
+
+#Find difference when n=30
+n_30-n_30_formula
+n_30-sum_n30
+c(sum_n30,n_30)
+```
+Using sum function and geometric series formula can give the same result.
+When use for loop, it gives the same result with geometric series formula when n=10,20,40. When n=30, the result of for loop is different from the result of geometric series formula. However,when n=30, the difference between the result of for loop and the result of geometric series formula is small. The numerical rounding may leads to this difference.
+Also, using sum function is better. It has less step and easier to be read.
+
+
+
+
+
+
+
+# Question 4
+
+Sample size 1000
+```{r}
+n<-1000
+set.seed(721)
+Sam1000<-numeric(15)
+for (i in 1:15) {
+  #Generate 1000 random numbers from Normal Distribution 
+  sample1000<-rnorm(n,0,1)
+  #Absolute values
+  abs_sample1000<-abs(sample1000)
+  #The absolute values that is less than 2
+  small_abs_sample1000<-abs_sample1000<2
+  #The proportion
+  Sam1000[i]<-mean(small_abs_sample1000)
+}
+Sam1000
+```
+
+Sample size 10000
+```{r}
+n<-10000
+set.seed(721)
+Sam10000<-numeric(15)
+for (i in 1:15) {
+  #Generate 10000 random numbers from Normal Distribution 
+  sample10000<-rnorm(n,0,1)
+  #Absolute values
+  abs_sample10000<-abs(sample10000)
+  #The absolute values that is less than 2
+  small_abs_sample10000<-abs_sample10000<2
+  #The proportion
+  Sam10000[i]<-mean(small_abs_sample10000)
+}
+Sam10000
+```
+
+Comparation
+```{r}
+var(Sam1000)
+max(Sam1000)-min(Sam1000)
+var(Sam10000)
+max(Sam10000)-min(Sam10000)
+```
+When sample size is 1000, the variance is 4.288571e-05, and the range is 0.024.
+When sample size is 10000, the variance is 4.288571e-05, and the range is 0.0059.
+The sample which size is larger(10000) has smaller variance and range.
+As the sample size becomes larger,it will has smaller variance and range and the variation becomes smaller.
+the variation of sample size 10000 does become smaller.
+
+
+
+
+
+
+#Question 5
+```{r}
+col1<-seq(1:8)
+col2<-rep(1:2,each=4)
+col3<-rep(1:2,each=2,times=2)
+col4<-rep(1:2,each=1,times=4)
+Q5<-cbind(col1,col2,col3,col4)
+matrix(Q5,nrow=8,ncol=4,byrow=FALSE)
+```
+
+
+
+
+
+#Question 6
+```{r}
+#Load build-in data frame cars 
+data(cars)
+```
+
+#(a)
+```{r}
+help(cars)
+```
+There are 50 observations and 2 variables in the datasets. The name of variables are speed and dist.
+
+#(b)
+```{r}
+#Find the observations that the car speed is 20 miles per hour
+speed20<-cars[cars$speed==20,] 
+#Get the mean of stopping distance of the car with 20 miles per hour speed 
+mean(speed20$dist)
+```
+So the mean stopping distance for all observations for which the speed was 20 miles per hour is 50.4ft.
+
+#(c)
+```{r}
+plot(x=cars$speed,y=cars$dist,main="Scatterplot of Stopping Distance VS Car Speed ",xlab="car speed",ylab="stopping distance")
+```
+There is a positive relationship between Stopping Distance and Speed. It is may be a linear positive relationship.
+
+
+
+
+
+
+
+#Question 7
+```{r}
+#Load the built-in data frame USArrests
+data("USArrests")
+```
+
+#(a)
+```{r}
+nrow(USArrests)
+ncol(USArrests)
+```
+So there are 50 rows and 4 columns in this data frame.
+
+#(b)
+```{r}
+#Calculate the median of each columb
+median(USArrests$Murder)
+median(USArrests$Assault)
+median(USArrests$UrbanPop)
+median(USArrests$Rape)
+```
+So the median of column Murder, Assault, UrbanPop and Rape are 7.25, 159, 66 and 30.1.
+
+#(c)
+```{r}
+#Find the observations that the UrbanPop exceeds 77%
+Urban_77<-USArrests$Murder[USArrests$UrbanPop>77]
+#Get the average per capita murder rate
+mean(Urban_77)
+#Find the observations that the UrbanPop less than 50%
+Urban_50<-USArrests$Murder[USArrests$UrbanPop<50]
+#Get the average per capita murder rat
+mean(Urban_50)
+```
+As a result, the avergae per capita murder rate (Murder) in regions where the percentage of the population living in urban areas (UrbanPop) exceeds 77% is 8.5.
+The the avergae per capita murder rate (Murder) in regions where the percentage of the population living in urban areas (UrbanPop) less than 50% is 8.25.
+The the avergae per capita murder rate (Murder) in regions where the percentage of the population living in urban areas (UrbanPop) less than 50% is smaller than the the avergae per capita murder rate (Murder) in regions where the percentage of the population living in urban areas (UrbanPop) less than 50%.
+
+#(d)
+```{r}
+set.seed(721)
+#A sample with sampling 12 rows from USArrests data frame withous replacement
+Sam_12_row<-sample(1:50,12,replace = FALSE)
+#Corrspond the rows
+Sam_12<-USArrests[Sam_12_row,]
+Sam_12
+```
+
+ 
+
